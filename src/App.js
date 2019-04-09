@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import axios from "axios";
+import Input from "./component/Input";
+import Display from "./component/Display";
 
 class App extends Component {
   state={
@@ -8,50 +9,41 @@ class App extends Component {
     lyrics: null
   }
   
-  setArtist = e => {
+  setArtist = name => {
     this.setState({
-      artistname: e.target.value
-    });
-  }
-  
-  setSong = e => {
-    this.setState({
-      songname: e.target.value
-    });
-  }
-  
-  handleClick = () => {
-    console.log(
-      "artisname",
-      this.state.artistname,
-      "songname",
-      this.state.songname
-    )
-    
-    const url = 
-    "https://api.lyrics.ovh/v1" 
-    + "/"
-    + this.state.artistname
-    + "/"
-    + this.state.songname
-    
-    axios(url)
-    .then(response=>{
-      console.log(response.data);
-      this.setState({
-        lyrics: response.data.lyrics
-      })
+      artistname: name
     })
+  }
+  setSong = name => {
+    this.setState({
+      songname: name
+    })
+  }
+  setLyrics = lyrics =>{
+    this.setState({lyrics})
   }
   
   render() {
     return (
-      <div className="App">
+      <div className="App" 
+        style={{
+          "textAlign":"center", 
+          "margin": "auto",
+          "width":"90%"
+        }}
+      >
         <h2>Search for a song </h2>
-        <input onChange={this.setArtist} placeholder="Artist Name"/>
-        <input onChange={this.setSong} placeholder="Song Name" />
-        <button onClick={this.handleClick} >Search </button>
-        <p>{this.state.lyrics}</p>
+        <Input 
+          setArtistName = {this.setArtist}
+          setSongName = {this.setSong}
+          setLyricsText = {this.setLyrics}
+        />
+        
+        <Display 
+          artist={this.state.artistname} 
+          song= {this.state.songname}
+          lyrics={this.state.lyrics} 
+        />
       </div>
     );
   }
